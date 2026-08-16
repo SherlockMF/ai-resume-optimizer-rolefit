@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Progress } from "@/components/ui/progress";
+import { DimensionRadarChart } from "./dimension-radar-chart";
 
 interface DiagnosisReportPanelProps {
   data: DiagnoseResponse;
@@ -89,6 +90,10 @@ export function DiagnosisReportPanel({ data }: DiagnosisReportPanelProps) {
 
       <div>
         <h4 className="mb-4 text-sm font-medium">多维度评分</h4>
+        <DimensionRadarChart
+          dimensions={data.dimensionScores}
+          className="mb-6 rounded-xl border border-border/80 bg-muted/20 px-2 py-4"
+        />
         <div className="space-y-4">
           {data.dimensionScores.map((d) => (
             <div key={d.dimension} className="space-y-1.5">

@@ -1,12 +1,19 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SiteHeader } from "@/components/layout/site-header";
 import { ApplicationKanban } from "@/components/applications/application-kanban";
 import { ButtonLink } from "@/components/ui/button";
+import { subscribeCloudDataChanged } from "@/lib/supabase/cloud-events";
 
 export default function ApplicationsPage() {
   const [refreshKey, setRefreshKey] = useState(0);
+
+  useEffect(
+    () =>
+      subscribeCloudDataChanged(() => setRefreshKey((k) => k + 1)),
+    [],
+  );
 
   return (
     <div className="min-h-screen bg-[#fafafa] dark:bg-background">

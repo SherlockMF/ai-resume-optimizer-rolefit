@@ -6,6 +6,7 @@ import {
   safeSetItem,
 } from "@/lib/storage/helpers";
 import { listAll as listHistory, load as loadHistory } from "@/lib/storage/history";
+import { getCloudSyncHooks } from "@/lib/supabase/sync-hooks";
 
 const STORAGE_KEY = "resume-optimizer-versions";
 const MAX_VERSIONS = 30;
@@ -105,10 +106,12 @@ export function saveVersionFromHistory(historyId: string): ResumeVersion | null 
       isPinned: existing.isPinned,
     };
     writeAll(all);
+    getCloudSyncHooks().onVersionSaved?.(all[idx]);
     return all[idx];
   }
 
   writeAll([payload, ...all]);
+  getCloudSyncHooks().onVersionSaved?.(payload);
   return payload;
 }
 
@@ -118,11 +121,13 @@ export function toggleVersionPin(id: string): ResumeVersion | null {
   if (idx < 0) return null;
   all[idx].isPinned = !all[idx].isPinned;
   writeAll(all);
+  getCloudSyncHooks().onVersionSaved?.(all[idx]);
   return all[idx];
 }
 
 export function removeVersion(id: string): void {
   writeAll(readAll().filter((v) => v.id !== id));
+  getCloudSyncHooks().onVersionDeleted?.(id);
 }
 
 export interface VersionKeywordDiff {

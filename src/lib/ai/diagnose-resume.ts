@@ -2,6 +2,7 @@ import { createLLMClient } from "@/lib/ai/client";
 import { parseAiJson } from "@/lib/ai/extract-json";
 import { normalizeDiagnoseResponse } from "@/lib/ai/normalize";
 import { buildDiagnosePrompt } from "@/lib/ai/prompts";
+import { getProfileDimensions, resolveRoleProfile } from "@/lib/optimizer/role-profiles";
 import {
   diagnoseResponseSchema,
   type DiagnoseRequest,
@@ -23,5 +24,7 @@ export async function diagnoseResume(
   );
 
   const parsed = parseAiJson(raw, diagnoseResponseSchema);
-  return normalizeDiagnoseResponse(parsed);
+  const profile = resolveRoleProfile(input.targetRole);
+  const fallbackDimensions = getProfileDimensions(profile);
+  return normalizeDiagnoseResponse(parsed, fallbackDimensions);
 }

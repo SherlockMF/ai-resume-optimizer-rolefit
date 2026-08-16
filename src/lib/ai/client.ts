@@ -86,14 +86,29 @@ class OpenAICompatibleClient implements LLMClient {
       body.thinking = { type: "disabled" };
     }
 
-    const response = await fetch(`${this.baseUrl}/chat/completions`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${this.apiKey}`,
-      },
-      body: JSON.stringify(body),
-    });
+    let response: Response;
+    try {
+      response = await fetch(`${this.baseUrl}/chat/completions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${this.apiKey}`,
+        },
+        body: JSON.stringify(body),
+      });
+    } catch (error) {
+      const detail =
+        error instanceof Error
+          ? error.cause instanceof Error
+            ? `${error.message}（${error.cause.message}）`
+            : error.message
+          : "网络错误";
+      const hint =
+        /eacces|198\.18\./i.test(detail)
+          ? " 常见原因：本机代理（Clash 等 Fake-IP）拦截了 Node 进程，请对 api.deepseek.com 设置直连后重启 npm run dev。"
+          : "";
+      throw new Error(`无法连接 LLM 服务 ${this.baseUrl}：${detail}.${hint}`);
+    }
 
     if (!response.ok) {
       const errorText = await response.text();

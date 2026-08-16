@@ -1,6 +1,11 @@
 import type { DiagnoseRequest } from "@/lib/types/diagnose";
 import type { RefineRequest } from "@/lib/types/refine";
 import { formatTargetContext } from "@/lib/ai/context";
+import {
+  formatProfileForPrompt,
+  getProfileDimensions,
+  resolveRoleProfile,
+} from "@/lib/optimizer/role-profiles";
 
 const CORE_RULES = `核心原则：
 1. 绝不编造用户没有的经历、项目、公司、数据或成果。
@@ -13,11 +18,17 @@ export function buildDiagnosePrompt(input: DiagnoseRequest): {
   system: string;
   user: string;
 } {
+  const profile = resolveRoleProfile(input.targetRole);
+  const dimensionList = getProfileDimensions(profile);
+  const profileBlock = formatProfileForPrompt(profile);
+
   const system = `你是一位专注「提高面试转化率」的中文简历顾问，帮助求职者从「${input.currentRole}」转向「${input.targetRole}」。
 
 ${CORE_RULES}
 
 本次任务：仅做诊断与追问设计，不要生成完整优化简历。
+
+${profileBlock}
 
 JSON schema:
 {
@@ -49,7 +60,8 @@ JSON schema:
   "applicationStrategy": { "worthApplying": "high"|"medium"|"low", "reason": string }
 }
 
-dimensionScores 必须包含 8 项：岗位匹配度、成果量化程度、表达专业度、结构清晰度、ATS友好度、可信度、差异化、可读性。
+dimensionScores 必须包含以下 ${dimensionList.length} 项：${dimensionList.join("、")}。
+整体评分 overallScore 请按上述各维度权重加权，并优先以岗位画像的判断标准为准。
 rewriteSuggestions 给 4-6 条，每条 id 用 b1,b2...。`;
 
   const user = `${formatTargetContext(input)}
@@ -69,6 +81,11 @@ export function buildRefinePrompt(input: RefineRequest): {
   system: string;
   user: string;
 } {
+  const profile = resolveRoleProfile(input.targetRole);
+  const refineProfileBlock = profile
+    ? "【" + profile.targetRole + " 岗位画像】面试考察点：" + profile.interviewFocus.join("、") + "；典型产出物：" + profile.deliverables.join("、") + "；考核指标：" + profile.metrics.join("、") + "。"
+    : "";
+
   const answersText =
     Object.keys(input.followUpAnswers).length > 0
       ? JSON.stringify(input.followUpAnswers, null, 2)
@@ -79,6 +96,8 @@ export function buildRefinePrompt(input: RefineRequest): {
 ${CORE_RULES}
 
 本次任务：基于诊断结果与用户追问回答，生成终稿简历与面试准备材料。
+
+${refineProfileBlock}
 
 JSON schema:
 {

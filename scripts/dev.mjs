@@ -77,13 +77,23 @@ const switched = port !== PREFERRED;
 
 printBanner(port, switched);
 
+const childEnv = { ...process.env, PORT: String(port) };
+// Node 22+：让 fetch 遵循 HTTP(S)_PROXY，避免 Clash Fake-IP 直连 198.18.* 出现 EACCES
+if (
+  !childEnv.NODE_USE_ENV_PROXY &&
+  (childEnv.HTTP_PROXY || childEnv.HTTPS_PROXY || childEnv.http_proxy || childEnv.https_proxy)
+) {
+  childEnv.NODE_USE_ENV_PROXY = "1";
+  console.log("已启用 NODE_USE_ENV_PROXY=1（检测到系统代理）\n");
+}
+
 const child = spawn(
   process.execPath,
   [nextBin, "dev", "--port", String(port), "--hostname", "127.0.0.1"],
   {
     cwd: root,
     stdio: "inherit",
-    env: { ...process.env, PORT: String(port) },
+    env: childEnv,
   },
 );
 

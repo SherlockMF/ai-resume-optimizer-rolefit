@@ -1,25 +1,16 @@
 import type { DiagnoseResponse } from "@/lib/types/diagnose";
 import type { RefineResponse } from "@/lib/types/refine";
-
-const DEFAULT_DIMENSIONS = [
-  "岗位匹配度",
-  "成果量化程度",
-  "表达专业度",
-  "结构清晰度",
-  "ATS友好度",
-  "可信度",
-  "差异化",
-  "可读性",
-];
+import { DEFAULT_DIMENSIONS } from "@/lib/optimizer/role-profiles";
 
 /** 修补 LLM 偶发缺字段 / 缺 id，降低 Zod 失败率 */
 export function normalizeDiagnoseResponse(
   raw: DiagnoseResponse,
+  fallbackDimensions: readonly string[] = DEFAULT_DIMENSIONS,
 ): DiagnoseResponse {
   const dimensionScores =
     raw.dimensionScores?.length >= 6
       ? raw.dimensionScores
-      : DEFAULT_DIMENSIONS.map((dimension) => ({
+      : fallbackDimensions.map((dimension) => ({
           dimension,
           score: raw.overallScore ?? 60,
           reason: "基于综合诊断估算",

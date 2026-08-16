@@ -11,6 +11,7 @@ import {
   notifyStorageQuota,
   safeSetItem,
 } from "@/lib/storage/helpers";
+import { getCloudSyncHooks } from "@/lib/supabase/sync-hooks";
 
 const STORAGE_KEY = "resume-optimizer-history";
 const MAX_RECORDS = 20;
@@ -164,6 +165,7 @@ export function save(params: SaveHistoryParams): HistoryRecord {
 
   const next = [record, ...all].slice(0, MAX_RECORDS);
   writeAll(next);
+  getCloudSyncHooks().onHistorySaved?.(record);
   return record;
 }
 
@@ -186,6 +188,7 @@ export function update(
   if (idx < 0) return null;
   all[idx] = { ...all[idx], ...patch };
   writeAll(all);
+  getCloudSyncHooks().onHistorySaved?.(all[idx]);
   return all[idx];
 }
 
@@ -209,15 +212,23 @@ export function togglePin(id: string): { record: HistoryRecord | null; error?: s
   }
 
   writeAll(all);
+  getCloudSyncHooks().onHistorySaved?.(record);
   return { record };
 }
 
 export function remove(id: string): void {
   writeAll(readAll().filter((r) => r.id !== id));
+  getCloudSyncHooks().onHistoryDeleted?.(id);
 }
 
 export function clearUnpinned(): void {
-  writeAll(readAll().filter((r) => r.pinned));
+  const kept = readAll().filter((r) => r.pinned);
+  const removed = readAll().filter((r) => !r.pinned);
+  writeAll(kept);
+  const hooks = getCloudSyncHooks();
+  for (const record of removed) {
+    hooks.onHistoryDeleted?.(record.id);
+  }
 }
 
 export const HISTORY_LIMITS = {

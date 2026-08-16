@@ -16,6 +16,7 @@ import {
 import { HistoryManageDialog } from "./history-manage-dialog";
 import { DataManagementDialog } from "./data-management-dialog";
 import { cn } from "@/lib/utils";
+import { subscribeCloudDataChanged } from "@/lib/supabase/cloud-events";
 
 interface HistorySidebarProps {
   activeId?: string | null;
@@ -34,6 +35,8 @@ export function HistorySidebar({ activeId, onSelect }: HistorySidebarProps) {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setRecords(listVisible());
   }, []);
+
+  useEffect(() => subscribeCloudDataChanged(refresh), [refresh]);
 
   return (
     <Card className="w-full min-w-0 border-border/80 shadow-none lg:sticky lg:top-20">

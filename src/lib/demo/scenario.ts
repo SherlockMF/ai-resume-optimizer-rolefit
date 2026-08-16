@@ -127,13 +127,13 @@ export function buildDemoDiagnose(): DiagnoseResponse {
     hrEvaluation: `建议「积极跟进」：与 ${DEMO_PERSONA.targetCompany} 飞书协同、平台型 B 端场景有叙事支点；建议在简历首屏写清「规划 → AI 产品」迁移逻辑，并保留智慧城市需求条目的可信度。`,
     dimensionScores: [
       { dimension: "岗位匹配度", score: 70, reason: `JD 关键词覆盖约七成；智慧城市 ${DEMO_FACTS.smartCityRequirements} 条需求可映射平台型产品` },
+      { dimension: "产品方法论", score: 58, reason: "PRD、MVP、A/B 测试等产品方法论尚未在简历中显性化" },
+      { dimension: "用户研究与数据驱动", score: 72, reason: `人口产业调研（${DEMO_FACTS.surveyHouseholds} 户+${DEMO_FACTS.surveyEnterprises} 家深访）可转译为用户研究` },
+      { dimension: "跨团队推进", score: 75, reason: `${DEMO_FACTS.teamSize} 多部门协调与批复落地体现推进能力` },
       { dimension: "成果量化程度", score: 62, reason: "已有片区面积、批复周期、调研样本等素材，需在 bullet 中写全" },
-      { dimension: "表达专业度", score: 74, reason: "语句通顺，「负责」类动词仍可优化" },
-      { dimension: "结构清晰度", score: 72, reason: "模块完整，转行动机建议置于总结段首句" },
-      { dimension: "ATS 友好度", score: 66, reason: "缺 PRD、A/B测试、用户研究等同义词" },
+      { dimension: "ATS友好度", score: 66, reason: "缺 PRD、A/B测试、用户研究等 JD 同义词" },
       { dimension: "可信度", score: 78, reason: "量化区间合理，智慧城市条目可面试核验" },
-      { dimension: "差异化", score: 65, reason: "跨行业迁移+政务数字化经验是差异点" },
-      { dimension: "可读性", score: 73, reason: "15 秒内可抓住项目统筹与调研能力" },
+      { dimension: "差异化", score: 68, reason: "跨行业迁移+政务数字化经验是差异点" },
     ],
     jdMatch: {
       overall: 70,

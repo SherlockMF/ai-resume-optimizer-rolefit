@@ -89,6 +89,27 @@ NEXT_PUBLIC_LLM_MODEL=glm-5.1
 
 其他 OpenAI 兼容服务（DeepSeek 等）同样设置 `LLM_PROVIDER=compatible` 与对应 `LLM_BASE_URL` / `LLM_MODEL` 即可。完整注释见 [`.env.example`](./.env.example)。
 
+## Supabase 用户与同步
+
+未登录时数据仅存在浏览器 `localStorage`。
+
+**登录后以 Supabase 为唯一数据源**：会清空本机业务数据并拉取该账号云端数据；之后诊断、终稿、版本与投递看板的变更会自动写穿到云端。登出时清空本地业务缓存。
+
+1. 创建 Supabase 项目，在 SQL Editor 执行 [`supabase/migrations/20260816000000_rolefit_core.sql`](./supabase/migrations/20260816000000_rolefit_core.sql)。
+2. 在 Supabase Auth 的 URL Configuration 中添加本地与生产回调地址，例如 `http://localhost:3000/auth/callback` 和 `https://你的域名/auth/callback`。
+3. 在 `.env.local` 与部署平台环境变量中设置：
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://你的项目.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_你的公开密钥
+```
+
+不要在浏览器环境变量中填写 `service_role` 或其他私密密钥。迁移已为业务表开启 RLS；请保留 `public` schema 的 Data API 访问配置，以便已登录用户通过受限策略同步自己的数据。
+
+已登录用户每个自然月默认有 10 次 AI 调用额度；未登录用户仍可按本地试用流程使用产品。`ai_usage_events` 只记录功能类型、次数、模型和状态，不保存简历、JD、prompt 或模型全文。
+
+「数据管理」仍支持 JSON 备份，以及手动「重新拉取云端」/「用本地覆盖云端」（危险操作）。
+
 ## 使用流程
 
 1. 打开 `/optimizer`，粘贴或上传简历（PDF / DOCX）+ 目标 JD；可选填目标岗位 / 公司 / 行业，或套用转行模板  

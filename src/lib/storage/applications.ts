@@ -4,6 +4,7 @@ import {
   notifyStorageQuota,
   safeSetItem,
 } from "@/lib/storage/helpers";
+import { getCloudSyncHooks } from "@/lib/supabase/sync-hooks";
 
 const STORAGE_KEY = "resume-optimizer-applications";
 const MAX_APPS = 50;
@@ -84,6 +85,7 @@ export function createApplication(
     updatedAt: now,
   };
   writeAll([app, ...readAll()]);
+  getCloudSyncHooks().onApplicationSaved?.(app);
   return app;
 }
 
@@ -116,11 +118,13 @@ export function updateApplication(
     updatedAt: new Date().toISOString(),
   };
   writeAll(all);
+  getCloudSyncHooks().onApplicationSaved?.(all[idx]);
   return all[idx];
 }
 
 export function removeApplication(id: string): void {
   writeAll(readAll().filter((a) => a.id !== id));
+  getCloudSyncHooks().onApplicationDeleted?.(id);
 }
 
 export function moveApplication(

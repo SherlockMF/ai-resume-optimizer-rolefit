@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ButtonLink } from "@/components/ui/button";
+import { AuthControl } from "./auth-control";
 
 export function SiteHeader() {
   return (
@@ -30,6 +31,7 @@ export function SiteHeader() {
           <ButtonLink href="/optimizer" size="sm">
             开始优化
           </ButtonLink>
+          <AuthControl />
         </nav>
       </div>
     </header>

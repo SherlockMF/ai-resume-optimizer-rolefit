@@ -20,8 +20,11 @@ import {
   toggleVersionPin,
   type ResumeVersion,
 } from "@/lib/storage/versions";
+import { subscribeCloudDataChanged } from "@/lib/supabase/cloud-events";
+import { useCloudData } from "@/components/layout/cloud-data-provider";
 
 export default function VersionsPage() {
+  const { status } = useCloudData();
   const [versions, setVersions] = useState<ResumeVersion[]>([]);
   const [selected, setSelected] = useState<string[]>([]);
   const [compareOpen, setCompareOpen] = useState(false);
@@ -29,10 +32,14 @@ export default function VersionsPage() {
   const refresh = () => setVersions(listVersions());
 
   useEffect(() => {
+    // 登录 hydrate 完成前不要从历史补版本，避免把旧本地数据写回云端
+    if (status === "loading") return;
     syncVersionsFromHistory();
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setVersions(listVersions());
-  }, []);
+  }, [status]);
+
+  useEffect(() => subscribeCloudDataChanged(refresh), []);
 
   const toggleSelect = (id: string) => {
     setSelected((prev) => {
