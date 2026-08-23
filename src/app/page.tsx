@@ -8,6 +8,7 @@ import {
   Upload,
 } from "lucide-react";
 import { SiteHeader } from "@/components/layout/site-header";
+import { PricingPlans } from "@/components/billing/pricing-plans";
 import { ButtonLink } from "@/components/ui/button";
 
 const steps = [
@@ -84,8 +85,8 @@ export default function HomePage() {
                 开始匹配诊断
                 <ArrowRight />
               </ButtonLink>
-              <ButtonLink href="/online-resume" variant="outline" size="lg" className="h-10 px-5">
-                生成在线主页
+              <ButtonLink href="/pricing" variant="outline" size="lg" className="h-10 px-5">
+                查看定价
               </ButtonLink>
             </div>
           </div>
@@ -113,6 +114,22 @@ export default function HomePage() {
                 </p>
               </div>
             ))}
+          </div>
+        </section>
+
+        <section className="border-t border-border/60">
+          <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
+            <h2 className="text-sm font-medium text-muted-foreground">定价</h2>
+            <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+              免费可用。Pro 月付 $9.99、年付 $99（美元），按周期自动续费，每月 100 次 AI。完整说明见
+              <a className="underline" href="/pricing">
+                定价页
+              </a>
+              。
+            </p>
+            <div className="mt-8">
+              <PricingPlans />
+            </div>
           </div>
         </section>
 

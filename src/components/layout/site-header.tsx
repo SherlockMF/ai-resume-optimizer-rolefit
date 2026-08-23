@@ -25,6 +25,9 @@ export function SiteHeader() {
           <ButtonLink href="/online-resume" variant="ghost" size="sm">
             在线简历
           </ButtonLink>
+          <ButtonLink href="/pricing" variant="ghost" size="sm">
+            定价
+          </ButtonLink>
           <ButtonLink href="/billing" variant="ghost" size="sm">
             订阅
           </ButtonLink>

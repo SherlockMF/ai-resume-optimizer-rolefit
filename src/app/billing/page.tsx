@@ -1,5 +1,6 @@
 import { SiteHeader } from "@/components/layout/site-header";
 import { BillingCheckoutButtons } from "@/components/billing/billing-checkout-buttons";
+import { PricingPlans } from "@/components/billing/pricing-plans";
 import { getServerSupabaseClient } from "@/lib/supabase/server";
 
 export default async function BillingPage({
@@ -30,20 +31,28 @@ export default async function BillingPage({
   return (
     <div className="flex min-h-screen flex-col bg-[#fafafa] dark:bg-background">
       <SiteHeader />
-      <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
+      <main className="mx-auto w-full max-w-6xl px-4 py-12 sm:px-6">
         <p className="text-xs text-muted-foreground">RoleFit Pro</p>
         <h1 className="mt-2 text-3xl font-semibold tracking-tight">订阅与额度</h1>
-        <p className="mt-3 text-muted-foreground">
-          免费用户每月 10 次 AI 调用。Pro 提升到 100 次/月，覆盖诊断、终稿、在线主页生成等。
+        <p className="mt-3 max-w-3xl text-muted-foreground">
+          方案与标价见下方。免费每月 10 次 AI；Pro 每月 100 次。月付 $9.99、年付 $99（美元，按周期自动续费）。公开说明也可在
+          <a className="underline" href="/pricing">
+            定价页
+          </a>
+          查看，无需登录。
         </p>
 
         {checkout === "success" ? (
-          <p className="mt-4 rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900">
+          <p className="mt-4 max-w-3xl rounded-md border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900">
             已从支付页返回。Webhook 确认后套餐会自动升级；请稍候刷新本页。
           </p>
         ) : null}
 
-        <section className="mt-8 rounded-xl border border-border bg-background p-6">
+        <div className="mt-8">
+          <PricingPlans />
+        </div>
+
+        <section className="mt-8 max-w-3xl rounded-xl border border-border bg-background p-6">
           <p className="text-sm text-muted-foreground">当前套餐</p>
           <p className="mt-1 text-xl font-medium">
             {planKey === "pro" ? "Pro" : "免费"} · 每月 {monthlyAiUnits} 次 AI

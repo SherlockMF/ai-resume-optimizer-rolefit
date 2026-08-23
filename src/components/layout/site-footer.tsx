@@ -16,6 +16,9 @@ export function SiteFooter() {
           </a>
         </p>
         <nav className="flex gap-4">
+          <Link href="/pricing" className="hover:text-foreground">
+            定价
+          </Link>
           <Link href="/terms" className="hover:text-foreground">
             服务条款
           </Link>
