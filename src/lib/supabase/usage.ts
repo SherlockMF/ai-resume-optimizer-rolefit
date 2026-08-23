@@ -6,7 +6,8 @@ export type AiFeatureKey =
   | "refine"
   | "outreach"
   | "translate"
-  | "portfolio";
+  | "portfolio"
+  | "online_resume";
 
 export class AiQuotaExceededError extends Error {
   constructor() {

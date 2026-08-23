@@ -11,11 +11,16 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonLink } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { getBrowserSupabaseClient } from "@/lib/supabase/client";
+import {
+  consumeAuthSuccessHandler,
+  notifyAuthSuccess,
+  registerAuthDialogOpener,
+} from "@/lib/auth/auth-dialog";
 
 type AuthMode = "login" | "register";
 
@@ -64,6 +69,18 @@ export function AuthControl() {
     return () => listener.subscription.unsubscribe();
   }, [client]);
 
+  useEffect(() => {
+    if (!client) return;
+    return registerAuthDialogOpener(() => {
+      if (user) {
+        notifyAuthSuccess();
+        return;
+      }
+      setMode("login");
+      setOpen(true);
+    });
+  }, [client, user]);
+
   if (!client) return null;
 
   const resetFeedback = () => {
@@ -103,6 +120,7 @@ export function AuthControl() {
       setPassword("");
       setOpen(false);
       setLoading(false);
+      notifyAuthSuccess();
       return;
     }
 
@@ -129,6 +147,7 @@ export function AuthControl() {
     setPassword("");
     setOpen(false);
     setLoading(false);
+    notifyAuthSuccess();
   };
 
   const handleSignOut = async () => {
@@ -158,6 +177,9 @@ export function AuthControl() {
             <DialogTitle>账户</DialogTitle>
             <DialogDescription>{user.email}</DialogDescription>
           </DialogHeader>
+          <ButtonLink href="/billing" variant="outline">
+            订阅 Pro
+          </ButtonLink>
           <Button type="button" variant="outline" onClick={handleSignOut} disabled={loading}>
             <LogOut />
             退出登录
@@ -175,6 +197,8 @@ export function AuthControl() {
         if (!next) {
           setPassword("");
           resetFeedback();
+          // 用户取消登录时丢弃待续跑回调，避免下次误触发
+          consumeAuthSuccessHandler();
         }
       }}
     >

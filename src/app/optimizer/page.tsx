@@ -4,7 +4,7 @@ import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Loader2, RotateCcw, Sparkles, Wand2, Kanban, Database } from "lucide-react";
+import { Loader2, RotateCcw, Sparkles, Wand2, Kanban, Database, Globe } from "lucide-react";
 import { SiteHeader } from "@/components/layout/site-header";
 import { ResumeInput } from "@/components/optimizer/resume-input";
 import { JobDescriptionInput } from "@/components/optimizer/job-description-input";
@@ -597,7 +597,7 @@ function OptimizerPageContent() {
             {refine && activeHistoryId && (
               <div className="flex flex-wrap items-center gap-3 rounded-lg border border-border/60 bg-muted/30 px-4 py-3">
                 <p className="text-sm text-muted-foreground">
-                  终稿已就绪，可加入投递看板跟踪进度
+                  终稿已就绪，可加入投递看板或生成在线求职主页
                 </p>
                 {addedToBoard ? (
                   <ButtonLink variant="outline" size="sm" href="/applications">
@@ -610,6 +610,14 @@ function OptimizerPageContent() {
                     加入投递看板
                   </Button>
                 )}
+                <ButtonLink
+                  variant="outline"
+                  size="sm"
+                  href={`/online-resume/new?historyId=${activeHistoryId}`}
+                >
+                  <Globe className="size-3.5" />
+                  生成在线主页
+                </ButtonLink>
               </div>
             )}
 

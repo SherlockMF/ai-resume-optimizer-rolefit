@@ -1,6 +1,7 @@
 import {
   ArrowRight,
   ClipboardCheck,
+  Globe,
   MessageCircleQuestion,
   Search,
   ShieldAlert,
@@ -51,6 +52,11 @@ const capabilities = [
     title: "面试追问",
     desc: "根据简历 bullet 预测面试官可能问什么",
   },
+  {
+    icon: Globe,
+    title: "在线求职主页",
+    desc: "AI 生成可换主题的分享页，公开链接无需登录即可打开",
+  },
 ];
 
 export default function HomePage() {
@@ -77,6 +83,9 @@ export default function HomePage() {
               <ButtonLink href="/optimizer" size="lg" className="h-10 px-5">
                 开始匹配诊断
                 <ArrowRight />
+              </ButtonLink>
+              <ButtonLink href="/online-resume" variant="outline" size="lg" className="h-10 px-5">
+                生成在线主页
               </ButtonLink>
             </div>
           </div>
@@ -112,7 +121,7 @@ export default function HomePage() {
             <h2 className="text-sm font-medium text-muted-foreground mb-8">
               核心能力
             </h2>
-            <div className="grid gap-4 sm:grid-cols-3">
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {capabilities.map((c) => (
                 <div
                   key={c.title}

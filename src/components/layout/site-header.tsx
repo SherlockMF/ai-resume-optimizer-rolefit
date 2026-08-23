@@ -12,7 +12,7 @@ export function SiteHeader() {
           </span>
           <span className="text-foreground">RoleFit</span>
           <span className="hidden text-[10px] text-muted-foreground sm:inline">
-            v0.4
+            v0.5
           </span>
         </Link>
         <nav className="flex items-center gap-1 sm:gap-2">
@@ -21,6 +21,12 @@ export function SiteHeader() {
           </ButtonLink>
           <ButtonLink href="/versions" variant="ghost" size="sm">
             岗位版本
+          </ButtonLink>
+          <ButtonLink href="/online-resume" variant="ghost" size="sm">
+            在线简历
+          </ButtonLink>
+          <ButtonLink href="/billing" variant="ghost" size="sm">
+            订阅
           </ButtonLink>
           <ButtonLink href="/applications" variant="ghost" size="sm">
             投递看板

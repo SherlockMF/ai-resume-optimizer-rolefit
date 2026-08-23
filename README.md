@@ -95,8 +95,14 @@ NEXT_PUBLIC_LLM_MODEL=glm-5.1
 
 **登录后以 Supabase 为唯一数据源**：会清空本机业务数据并拉取该账号云端数据；之后诊断、终稿、版本与投递看板的变更会自动写穿到云端。登出时清空本地业务缓存。
 
-1. 创建 Supabase 项目，在 SQL Editor 执行 [`supabase/migrations/20260816000000_rolefit_core.sql`](./supabase/migrations/20260816000000_rolefit_core.sql)。
-2. 在 Supabase Auth 的 URL Configuration 中添加本地与生产回调地址，例如 `http://localhost:3000/auth/callback` 和 `https://你的域名/auth/callback`。
+### 在线求职主页（2.0）
+
+- 工作台：`/online-resume`、`/online-resume/new`、`/online-resume/[id]/edit`
+- 公开页：`/p/[slug]`（无需登录）
+- 另执行 [`supabase/migrations/20260821000000_online_resume_pages.sql`](./supabase/migrations/20260821000000_online_resume_pages.sql)
+
+1. 创建 Supabase 项目，在 SQL Editor 执行 [`supabase/migrations/20260816000000_rolefit_core.sql`](./supabase/migrations/20260816000000_rolefit_core.sql) 与 online resume migration。
+2. 在 Supabase Auth 的 URL Configuration 中添加本地与生产回调地址，例如 `http://localhost:3000/auth/callback`、`http://localhost:3002/auth/callback` 和 `https://lomivex.top/auth/callback`（以及 `https://www.lomivex.top/auth/callback`）。
 3. 在 `.env.local` 与部署平台环境变量中设置：
 
 ```env
@@ -145,13 +151,33 @@ scripts/               # 开发端口探测与清理
 
 ## 部署（Netlify）
 
-线上地址：**https://rolefit-254.netlify.app**
+线上地址：**https://lomivex.top**（`www.lomivex.top` 为别名）  
+备用：https://rolefit-254.netlify.app
 
 - 配置：[`netlify.toml`](./netlify.toml)
 - 自动发布：推送 `main` → [GitHub Actions](./.github/workflows/deploy-netlify.yml) → Netlify
-- 后台：https://app.netlify.com/projects/rolefit-254
+- 后台：https://app.netlify.com/projects/rolefit-254/settings/domain
+
+在域名注册商处把 DNS 指到 Netlify 后，证书才会签发：
+
+| 主机记录 | 类型 | 值 |
+|----------|------|-----|
+| `@`（根域名） | A | `75.2.60.5` |
+| `www` | CNAME | `rolefit-254.netlify.app` |
+
+若注册商支持 ALIAS/ANAME，根域名也可指向 `apex-loadbalancer.netlify.com`。DNS 生效后 HTTPS 会自动开通。
 
 默认 `LLM_PROVIDER=mock`（无需 Key）。接真实模型时，在 Netlify → Environment variables 或 GitHub Secrets 对应环境里设置 `LLM_*` / `NEXT_PUBLIC_LLM_*`。
+
+## 支付（Waffo Pancake，测试环境）
+
+- 订阅页：`/billing`
+- 结账 API：`POST /api/billing/checkout`（需登录）
+- Webhook：`POST /api/webhooks/waffo`（原始 body 验签）
+- 环境变量见 [`.env.example`](./.env.example)：`WAFFO_MERCHANT_ID`、`WAFFO_PRIVATE_KEY`（或 `WAFFO_PRIVATE_KEY_BASE64`）、商品 ID、以及服务端 `SUPABASE_SERVICE_ROLE_KEY`
+- 首次创建测试订阅商品：配置私钥后执行 `npm run waffo:setup`，把打印出的 `PROD_` 写入环境变量
+- 仪表盘登记 Webhook：`https://lomivex.top/api/webhooks/waffo`（测试模式）
+- 测试卡：`4576 7500 0000 0110`（成功）/ `4576 7500 0000 0220`（失败）
 
 ## 原则
 
