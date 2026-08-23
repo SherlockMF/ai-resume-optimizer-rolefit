@@ -7,7 +7,6 @@ import {
   ShieldAlert,
   Upload,
 } from "lucide-react";
-import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { ButtonLink } from "@/components/ui/button";
 
@@ -140,7 +139,6 @@ export default function HomePage() {
           </div>
         </section>
       </main>
-      <SiteFooter />
     </div>
   );
 }

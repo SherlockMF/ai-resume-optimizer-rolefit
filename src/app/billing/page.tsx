@@ -1,4 +1,3 @@
-import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { BillingCheckoutButtons } from "@/components/billing/billing-checkout-buttons";
 import { getServerSupabaseClient } from "@/lib/supabase/server";
@@ -64,7 +63,6 @@ export default async function BillingPage({
           </div>
         </section>
       </main>
-      <SiteFooter />
     </div>
   );
 }

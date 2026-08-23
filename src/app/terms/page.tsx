@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { SITE_SUPPORT_EMAIL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "服务条款 | RoleFit",
@@ -75,7 +75,11 @@ export default function TermsPage() {
           <section className="space-y-2">
             <h2 className="text-lg font-medium">10. 联系</h2>
             <p>
-              与本条款相关的问题，请通过网站内账户功能或站点运营方公示的联系方式反馈。隐私处理见
+              与本条款相关的问题，请发送邮件至{" "}
+              <a className="underline" href={`mailto:${SITE_SUPPORT_EMAIL}`}>
+                {SITE_SUPPORT_EMAIL}
+              </a>
+              。隐私处理见
               <Link className="underline" href="/privacy">
                 隐私政策
               </Link>
@@ -84,7 +88,6 @@ export default function TermsPage() {
           </section>
         </div>
       </main>
-      <SiteFooter />
     </div>
   );
 }

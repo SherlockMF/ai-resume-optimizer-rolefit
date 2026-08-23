@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { CloudDataProvider } from "@/components/layout/cloud-data-provider";
+import { SiteFooter } from "@/components/layout/site-footer";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -32,7 +33,12 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <TooltipProvider>
-          <CloudDataProvider>{children}</CloudDataProvider>
+          <CloudDataProvider>
+            <div className="flex min-h-full flex-1 flex-col">
+              <div className="flex-1">{children}</div>
+              <SiteFooter />
+            </div>
+          </CloudDataProvider>
         </TooltipProvider>
       </body>
     </html>

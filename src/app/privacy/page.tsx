@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
+import { SITE_SUPPORT_EMAIL } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "隐私政策 | RoleFit",
@@ -80,7 +80,11 @@ export default function PrivacyPage() {
           <section className="space-y-2">
             <h2 className="text-lg font-medium">8. 你的选择</h2>
             <p>
-              你可以拒绝提供非必要信息（部分功能将不可用）、停止公开主页、退出登录或清除本机数据。如需删除云端账户数据，请通过站点运营方可联系渠道提出请求，我们将在核实身份后处理，法律法规要求保留的除外。
+              你可以拒绝提供非必要信息（部分功能将不可用）、停止公开主页、退出登录或清除本机数据。如需删除云端账户数据，请发送邮件至{" "}
+              <a className="underline" href={`mailto:${SITE_SUPPORT_EMAIL}`}>
+                {SITE_SUPPORT_EMAIL}
+              </a>
+              ，我们将在核实身份后处理，法律法规要求保留的除外。
             </p>
           </section>
           <section className="space-y-2">
@@ -91,9 +95,18 @@ export default function PrivacyPage() {
             <h2 className="text-lg font-medium">10. 政策更新</h2>
             <p>政策更新将发布于本页。重大变更时，我们可能通过站点提示。继续使用即表示你了解更新后的政策。</p>
           </section>
+          <section className="space-y-2">
+            <h2 className="text-lg font-medium">11. 联系我们</h2>
+            <p>
+              客服邮箱：
+              <a className="underline" href={`mailto:${SITE_SUPPORT_EMAIL}`}>
+                {SITE_SUPPORT_EMAIL}
+              </a>
+              。该邮箱同时公示于全站页脚。
+            </p>
+          </section>
         </div>
       </main>
-      <SiteFooter />
     </div>
   );
 }

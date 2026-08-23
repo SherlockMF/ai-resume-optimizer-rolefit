@@ -1,6 +1,5 @@
 import fs from "node:fs";
 import path from "node:path";
-import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 
 function loadChangelog(): string {
@@ -23,7 +22,6 @@ export default function ChangelogPage() {
           {md}
         </pre>
       </main>
-      <SiteFooter />
     </div>
   );
 }
