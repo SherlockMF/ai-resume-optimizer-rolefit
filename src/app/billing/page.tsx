@@ -1,3 +1,4 @@
+import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { BillingCheckoutButtons } from "@/components/billing/billing-checkout-buttons";
 import { getServerSupabaseClient } from "@/lib/supabase/server";
@@ -28,7 +29,7 @@ export default async function BillingPage({
   }
 
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-background">
+    <div className="flex min-h-screen flex-col bg-[#fafafa] dark:bg-background">
       <SiteHeader />
       <main className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
         <p className="text-xs text-muted-foreground">RoleFit Pro</p>
@@ -63,6 +64,7 @@ export default async function BillingPage({
           </div>
         </section>
       </main>
+      <SiteFooter />
     </div>
   );
 }

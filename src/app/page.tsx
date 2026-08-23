@@ -7,6 +7,7 @@ import {
   ShieldAlert,
   Upload,
 } from "lucide-react";
+import { SiteFooter } from "@/components/layout/site-footer";
 import { SiteHeader } from "@/components/layout/site-header";
 import { ButtonLink } from "@/components/ui/button";
 
@@ -61,7 +62,7 @@ const capabilities = [
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-[#fafafa] dark:bg-background">
+    <div className="flex min-h-screen flex-col bg-[#fafafa] dark:bg-background">
       <SiteHeader />
       <main>
         <section className="relative overflow-hidden border-b border-border/60">
@@ -139,6 +140,7 @@ export default function HomePage() {
           </div>
         </section>
       </main>
+      <SiteFooter />
     </div>
   );
 }

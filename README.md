@@ -152,7 +152,9 @@ scripts/               # 开发端口探测与清理
 ## 部署（Netlify）
 
 线上地址：**https://lomivex.top**（`www.lomivex.top` 为别名）  
-备用：https://rolefit-254.netlify.app
+备用：https://rolefit-254.netlify.app  
+服务条款：https://lomivex.top/terms  
+隐私政策：https://lomivex.top/privacy
 
 - 配置：[`netlify.toml`](./netlify.toml)
 - 自动发布：推送 `main` → [GitHub Actions](./.github/workflows/deploy-netlify.yml) → Netlify

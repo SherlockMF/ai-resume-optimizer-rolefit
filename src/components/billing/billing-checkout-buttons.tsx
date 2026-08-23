@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { openAuthDialog } from "@/lib/auth/auth-dialog";
 
@@ -58,7 +59,15 @@ export function BillingCheckoutButtons({ isLoggedIn }: { isLoggedIn: boolean }) 
       </div>
       {error ? <p className="text-sm text-destructive">{error}</p> : null}
       <p className="text-xs text-muted-foreground">
-        支付页会在新标签打开。测试卡：4576 7500 0000 0110，任意未来有效期与 CVC。
+        支付页会在新标签打开。开通即表示你同意
+        <Link className="underline" href="/terms">
+          服务条款
+        </Link>
+        与
+        <Link className="underline" href="/privacy">
+          隐私政策
+        </Link>
+        。测试卡：4576 7500 0000 0110，任意未来有效期与 CVC。
       </p>
     </div>
   );
