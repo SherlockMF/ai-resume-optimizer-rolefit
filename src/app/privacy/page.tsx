@@ -5,6 +5,9 @@ import { SITE_SUPPORT_EMAIL } from "@/lib/site";
 export const metadata: Metadata = {
   title: "隐私政策 | RoleFit",
   description: "RoleFit 如何收集、使用与保护你的个人信息。",
+  alternates: {
+    canonical: "/privacy",
+  },
 };
 
 export default function PrivacyPage() {

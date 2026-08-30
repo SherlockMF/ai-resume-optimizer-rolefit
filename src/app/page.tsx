@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import {
   ArrowRight,
   ClipboardCheck,
@@ -10,6 +11,12 @@ import {
 import { SiteHeader } from "@/components/layout/site-header";
 import { PricingPlans } from "@/components/billing/pricing-plans";
 import { ButtonLink } from "@/components/ui/button";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+  },
+};
 
 const steps = [
   {

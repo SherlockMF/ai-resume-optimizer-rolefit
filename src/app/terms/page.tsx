@@ -6,6 +6,9 @@ import { SITE_SUPPORT_EMAIL } from "@/lib/site";
 export const metadata: Metadata = {
   title: "服务条款 | RoleFit",
   description: "RoleFit 网站与相关服务的使用条款。",
+  alternates: {
+    canonical: "/terms",
+  },
 };
 
 export default function TermsPage() {

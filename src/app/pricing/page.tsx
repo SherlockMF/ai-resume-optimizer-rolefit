@@ -7,6 +7,9 @@ export const metadata: Metadata = {
   title: "定价 | RoleFit",
   description:
     "RoleFit 免费版与 Pro 订阅价格、额度与计费周期说明。月付 $9.99，年付 $99。",
+  alternates: {
+    canonical: "/pricing",
+  },
 };
 
 export default function PricingPage() {

@@ -9,21 +9,27 @@ type PageProps = {
   params: Promise<{ slug: string }>;
 };
 
+const privateProfileRobots: Metadata["robots"] = {
+  index: false,
+  follow: false,
+};
+
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { slug } = await params;
   const client = createPublicSupabaseClient();
-  if (!client) return { title: "求职主页" };
+  if (!client) return { title: "求职主页", robots: privateProfileRobots };
   try {
     const page = await getPublishedOnlineResumeBySlug(client, slug);
-    if (!page) return { title: "主页未找到" };
+    if (!page) return { title: "主页未找到", robots: privateProfileRobots };
     return {
       title: `${page.content.profile.displayName} · ${page.content.profile.headline}`,
       description: page.content.positioning.slice(0, 160),
+      robots: privateProfileRobots,
     };
   } catch {
-    return { title: "求职主页" };
+    return { title: "求职主页", robots: privateProfileRobots };
   }
 }
 

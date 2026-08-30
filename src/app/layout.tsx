@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { CloudDataProvider } from "@/components/layout/cloud-data-provider";
 import { SiteFooter } from "@/components/layout/site-footer";
+import { SITE_ORIGIN } from "@/lib/site";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -16,6 +17,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_ORIGIN),
   title: "RoleFit | Resume matching for career switchers",
   description:
     "RoleFit: AI resume workspace for career switchers — JD match diagnosis, quantified follow-ups, outreach, and application tracking.",
