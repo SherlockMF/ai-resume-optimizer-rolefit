@@ -1,6 +1,10 @@
-# RoleFit
+# RoleFit — AI Resume Optimizer / AI 简历优化工具
 
-面向转行求职者的中文 AI 简历匹配与面试转化工具。把经历对齐目标岗位（**Role Fit**），提高拿面试的概率。
+面向转行求职者的中文 AI 简历优化与岗位匹配工具，提供 JD 匹配诊断、ATS 兼容性检查、简历改写、面试准备与投递跟踪。把经历对齐目标岗位（**Role Fit**），提高拿面试的概率。
+
+RoleFit is an AI resume optimizer for career switchers, with job description matching, ATS compatibility checks, resume rewriting, interview preparation, and job application tracking. Built with Next.js, React, and TypeScript, with a Chinese-language interface.
+
+**[GitHub 仓库](https://github.com/SherlockMF/ai-resume-optimizer-rolefit)** · 按下方「快速开始」在本地运行
 
 当前版本 **v0.4** · **[更新日志](./CHANGELOG.md)** · 应用内说明：`/changelog`
 
@@ -45,10 +49,25 @@
 ## 快速开始
 
 ```bash
+git clone https://github.com/SherlockMF/ai-resume-optimizer-rolefit.git
+cd ai-resume-optimizer-rolefit
 npm install
 cp .env.example .env.local
 npm run dev
 ```
+
+### 已有克隆更新远程地址
+
+仓库名已从 `SherlockMF/rolefit` 更新为 `SherlockMF/ai-resume-optimizer-rolefit`，产品名称仍为 **RoleFit**。在已有本地仓库目录中执行：
+
+```bash
+git remote set-url origin https://github.com/SherlockMF/ai-resume-optimizer-rolefit.git
+git remote -v
+```
+
+无需重新克隆或重命名本地目录。
+
+### 开发服务
 
 启动时从 **3000** 起自动找空端口（至 3010），并在终端打印最终访问地址。
 
@@ -102,7 +121,7 @@ NEXT_PUBLIC_LLM_MODEL=glm-5.1
 - 另执行 [`supabase/migrations/20260821000000_online_resume_pages.sql`](./supabase/migrations/20260821000000_online_resume_pages.sql)
 
 1. 创建 Supabase 项目，在 SQL Editor 执行 [`supabase/migrations/20260816000000_rolefit_core.sql`](./supabase/migrations/20260816000000_rolefit_core.sql) 与 online resume migration。
-2. 在 Supabase Auth 的 URL Configuration 中添加本地与生产回调地址，例如 `http://localhost:3000/auth/callback`、`http://localhost:3002/auth/callback` 和 `https://lomivex.top/auth/callback`（以及 `https://www.lomivex.top/auth/callback`）。
+2. 在 Supabase Auth 的 URL Configuration 中添加本地回调地址，例如 `http://localhost:3000/auth/callback`、`http://localhost:3002/auth/callback`。如需自行部署，再添加 `https://你的域名/auth/callback`。
 3. 在 `.env.local` 与部署平台环境变量中设置：
 
 ```env
@@ -149,28 +168,13 @@ src/
 scripts/               # 开发端口探测与清理
 ```
 
-## 部署（Netlify）
+## 部署状态
 
-线上地址：**https://lomivex.top**（`www.lomivex.top` 为别名）  
-备用：https://rolefit-254.netlify.app  
-服务条款：https://lomivex.top/terms  
-隐私政策：https://lomivex.top/privacy  
-定价：https://lomivex.top/pricing
+本项目已停止自动部署，GitHub Actions 的 Netlify 部署工作流已停用并从仓库移除，推送 `main` 不再通过该工作流发布网站。
 
-- 配置：[`netlify.toml`](./netlify.toml)
-- 自动发布：推送 `main` → [GitHub Actions](./.github/workflows/deploy-netlify.yml) → Netlify
-- 后台：https://app.netlify.com/projects/rolefit-254/settings/domain
+原域名 `lomivex.top` 已用于其他项目，不再作为 RoleFit 的在线体验入口。请按「快速开始」在本地运行。停止自动部署不等于下线已有的 Netlify 站点。
 
-在域名注册商处把 DNS 指到 Netlify 后，证书才会签发：
-
-| 主机记录 | 类型 | 值 |
-|----------|------|-----|
-| `@`（根域名） | A | `75.2.60.5` |
-| `www` | CNAME | `rolefit-254.netlify.app` |
-
-若注册商支持 ALIAS/ANAME，根域名也可指向 `apex-loadbalancer.netlify.com`。DNS 生效后 HTTPS 会自动开通。
-
-默认 `LLM_PROVIDER=mock`（无需 Key）。接真实模型时，在 Netlify → Environment variables 或 GitHub Secrets 对应环境里设置 `LLM_*` / `NEXT_PUBLIC_LLM_*`。
+[`netlify.toml`](./netlify.toml) 保留为历史部署配置。如需重新部署，请自行选择站点和域名，并同步更新站点 URL、登录回调和支付 Webhook 配置，不要直接复用原域名。
 
 ## 支付（Waffo Pancake，测试环境）
 
@@ -179,7 +183,7 @@ scripts/               # 开发端口探测与清理
 - Webhook：`POST /api/webhooks/waffo`（原始 body 验签）
 - 环境变量见 [`.env.example`](./.env.example)：`WAFFO_MERCHANT_ID`、`WAFFO_PRIVATE_KEY`（或 `WAFFO_PRIVATE_KEY_BASE64`）、商品 ID、以及服务端 `SUPABASE_SERVICE_ROLE_KEY`
 - 首次创建测试订阅商品：配置私钥后执行 `npm run waffo:setup`，把打印出的 `PROD_` 写入环境变量
-- 仪表盘登记 Webhook：`https://lomivex.top/api/webhooks/waffo`（测试模式）
+- 自行部署后，在仪表盘登记 Webhook：`https://你的域名/api/webhooks/waffo`（测试模式）
 - 测试卡：`4576 7500 0000 0110`（成功）/ `4576 7500 0000 0220`（失败）
 
 ## 原则
